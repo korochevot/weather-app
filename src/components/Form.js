@@ -23,7 +23,6 @@ class Form extends Component{
     
     handleCityChange = (event) =>{
         this.setState({ city: event.target.value });
-        console.log(this.state.city);
     }
     
     render(){
