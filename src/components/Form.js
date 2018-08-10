@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import '../css/Form.css'
 
 class Form extends Component{
     state = {
@@ -27,14 +28,14 @@ class Form extends Component{
     
     render(){
         return(
-            <form onSubmit={this.handleSubmit}>
+            <form className="form" onSubmit={this.handleSubmit}>
                 <input 
                     type="text"
                     placeholder="Enter the city" 
                     value = {this.state.city}
                     onChange = {this.handleCityChange}
                 />
-                <button>Submit</button>
+                <button className="submit_btn">Submit</button>
             </form>
         )
     }

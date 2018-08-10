@@ -1,0 +1,14 @@
+.form input{
+    width: 400px;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    padding-left: 10px;
+}
+
+.submit_btn{
+    margin-left: 30px;
+}
