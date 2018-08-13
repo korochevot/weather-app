@@ -15,7 +15,6 @@ class Form extends Component{
         .then(res => {
             this.setState({ weatherData: res.data });
             console.log(this.state.weatherData);
-            //need to update data in App component
         })
         .catch((err) => {
             console.log(err);
@@ -27,7 +26,21 @@ class Form extends Component{
     }
     
     render(){
+        if(!this.state.weatherData.main){
+            return (
+                <form className="form" onSubmit={this.handleSubmit}>
+                    <input 
+                        type="text"
+                        placeholder="Enter the city" 
+                        value = {this.state.city}
+                        onChange = {this.handleCityChange}
+                    />
+                    <button className="submit_btn">Submit</button>
+                </form>
+            )
+        }
         return(
+            <div>
             <form className="form" onSubmit={this.handleSubmit}>
                 <input 
                     type="text"
@@ -37,6 +50,13 @@ class Form extends Component{
                 />
                 <button className="submit_btn">Submit</button>
             </form>
+            <div className="weather_description">
+                <h1>{this.state.weatherData.name}</h1>
+                <span>{this.state.weatherData.main.temp}&deg;</span>
+                <span>{this.state.weatherData.weather[0].main}</span>
+                <span>{this.state.weatherData.wind.speed}m/s</span>
+            </div>
+            </div>
         )
     }
 }
