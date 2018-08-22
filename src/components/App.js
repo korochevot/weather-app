@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Form from './Form'
+import WeatherData from './WeatherData'
 import '../css/App.css'
 
 class App extends Component {  
   state = {
-    weatherData: []
+    myWeatherData: []
   }
 
   getLocation = () => {
@@ -13,7 +14,7 @@ class App extends Component {
       (position) => {
         axios.get('https://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+'&lon='+position.coords.longitude+'&appid=3b29cda6faa9422aaab7ababbaeae5bd&units=metric')
         .then(res => {
-          this.setState({ weatherData: res.data });
+          this.setState({ myWeatherData: res.data });
           console.log(res.data);
         })
         .catch((err) => {
@@ -26,26 +27,20 @@ class App extends Component {
   }
 
   render() {
-    if(!this.state.weatherData.main){     
-      return (
-        <div className="mainBlock">
-          <Form />
-          <h1>or</h1>
-          <button className="findMe_btn" onClick={this.getLocation}>Find me</button>
-        </div>
-      )
-    }
     return (
       <div className="mainBlock">
-        <Form />
-        <div className="weather_description">
-          <h1>{this.state.weatherData.name}</h1>
-          <span>{this.state.weatherData.main.temp}&deg;</span>
-          <span>{this.state.weatherData.weather[0].main}</span>
-          <span>{this.state.weatherData.wind.speed}m/s</span>
-        </div>
-        <h1>or</h1>
         <button className="findMe_btn" onClick={this.getLocation}>Find me</button>
+        <h1>or</h1>
+        <Form />
+        <WeatherData />
+        {this.state.myWeatherData.main &&
+          <div className="weather_description">
+            <h1>{this.state.myWeatherData.name}</h1>
+            <span>{this.state.myWeatherData.main.temp}&deg;</span>
+            <span>{this.state.myWeatherData.weather[0].main}</span>
+            <span>{this.state.myWeatherData.wind.speed}m/s</span>
+          </div>
+        }
       </div>
     );
   }

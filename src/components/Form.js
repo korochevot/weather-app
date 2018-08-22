@@ -13,8 +13,17 @@ class Form extends Component{
         const userCity = this.state.city;
         axios.get('https://api.openweathermap.org/data/2.5/weather?q='+userCity+'&appid=3b29cda6faa9422aaab7ababbaeae5bd&units=metric')
         .then(res => {
-            this.setState({ weatherData: res.data });
-            console.log(this.state.weatherData);
+            this.setState({ weatherData: res.data});
+
+            let localStorageData = localStorage.getItem('weather_data');
+            if(!localStorageData){
+                localStorage.setItem('weather_data', JSON.stringify(res.data));
+            }else{
+                localStorage.setItem('weather_data', localStorageData + '&&' + JSON.stringify(res.data));
+            }
+
+
+            
         })
         .catch((err) => {
             console.log(err);
@@ -26,8 +35,8 @@ class Form extends Component{
     }
     
     render(){
-        if(!this.state.weatherData.main){
-            return (
+        return(
+            <div>
                 <form className="form" onSubmit={this.handleSubmit}>
                     <input 
                         type="text"
@@ -37,26 +46,15 @@ class Form extends Component{
                     />
                     <button className="submit_btn">Submit</button>
                 </form>
-            )
-        }
-        return(
-            <div>
-            <form className="form" onSubmit={this.handleSubmit}>
-                <input 
-                    type="text"
-                    placeholder="Enter the city" 
-                    value = {this.state.city}
-                    onChange = {this.handleCityChange}
-                />
-                <button className="submit_btn">Submit</button>
-            </form>
-            <div className="weather_description">
-                <h1>{this.state.weatherData.name}</h1>
-                <span>{this.state.weatherData.main.temp}&deg;</span>
-                <span>{this.state.weatherData.weather[0].main}</span>
-                <span>{this.state.weatherData.wind.speed}m/s</span>
-            </div>
-            </div>
+                {this.state.weatherData.main &&
+                    <div className="weather_description">
+                        <h1>{this.state.weatherData.name}</h1>
+                        <span>{this.state.weatherData.main.temp}&deg;</span>
+                        <span>{this.state.weatherData.weather[0].main}</span>
+                        <span>{this.state.weatherData.wind.speed}m/s</span>
+                    </div>
+                }
+            </div>           
         )
     }
 }
